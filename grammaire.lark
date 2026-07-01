@@ -1,11 +1,12 @@
 partition : bpm ";" note (";" note)*
-note      : duree temps_0 nom_note octave
+note      : duree temps_0 nom_note octave instrument
 
 bpm       : NUMBER
 duree     : NUMBER
 temps_0   : NUMBER
 nom_note  : NUMBER
 octave    : NUMBER
+instrument: NUMBER
 %import common.NUMBER
 %import common.WS
 %ignore WS

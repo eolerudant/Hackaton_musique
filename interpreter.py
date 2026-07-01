@@ -27,6 +27,10 @@ class InterpreteurMusical(Transformer):
             raise ValueError(f"Erreur : L'octave doit être compris entre 0 et 8 (valeur lue : {valeur})")
             
         return valeur
+    
+    def instrument(self, args):
+        return int(args[0])
+    
 
     def note(self, elements):
         
@@ -34,7 +38,8 @@ class InterpreteurMusical(Transformer):
             "duree": float(elements[0]),
             "temps_0": float(elements[1]),
             "note": int(elements[2]),
-            "octave": int(elements[3])
+            "octave": int(elements[3]),
+            "instrument": int(elements[4])
         }
 
 
@@ -44,3 +49,4 @@ class InterpreteurMusical(Transformer):
             "bpm": args[0],
             "notes": args[1:]
         }
+    

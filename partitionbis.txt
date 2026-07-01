@@ -1,0 +1,12 @@
+#[meta]
+bpm = 148;
+title = "fur elise";
+
+#[instruments]
+piano = {
+    oscillator = sin/saw/square/triangle/bruit
+    enveloppe = 4,4,4,4
+    harmonics = [2;0.5,6,8]
+}
+
+trumpet = 

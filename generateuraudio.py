@@ -2,6 +2,80 @@ import wave
 import math
 import struct
 
+# ==============================================================
+                #BANQUE D'INSTRUMENTS
+# ==============================================================
+
+def son_bip(temps_actuel, freq, duree_totale):
+    # Génère un son bip simple (sinusoïde)
+    valeur = math.sin(2 * math.pi * freq * temps_actuel) * 0.3
+
+    # Enveloppe simple
+    if temps_actuel < 0.01:
+        valeur *= (temps_actuel / 0.01)
+    elif temps_actuel > duree_totale - 0.01:
+        valeur *= ((duree_totale - temps_actuel) / 0.01)
+        
+    return valeur
+
+def son_piano(temps_actuel, freq, duree_totale):
+    # Exemple de poids : [Fondamentale, h2, h3, h4]
+    poids = [1.0, 0.5, 0.25, 0.125]
+    w = 2 * math.pi * freq * temps_actuel
+    onde = 0
+    for n, p in enumerate(poids, start=1):
+        onde += p * math.sin(n * w)
+    
+    
+    
+    #PARAMÈTRES DE L'ENVELOPPE ADSR (en secondes)
+    A_time = 0.01    # Attack (temps)
+    D_time = 0.15    # Declay (temps pour attaindre le niveau de sustain)
+    S_level = 0.3    # Sustain (taux de volume maintenu)
+    R_time = 0.20    # Release (temps)
+    
+    # Sécurité pour les notes très courtes : le relâchement ne peut dépasser 30% de la note
+    if R_time > duree_totale:
+        R_time = duree_totale * 0.3
+        
+    temps_relachement = duree_totale - R_time
+    
+    #CALCUL DE L'ENVELOPPE DYNAMIQUE
+    if temps_actuel < A_time:
+        
+        enveloppe = temps_actuel / A_time
+        
+    elif temps_actuel < (A_time + D_time):
+        
+        t_decay = temps_actuel - A_time
+        enveloppe = 1.0 - (1.0 - S_level) * (t_decay / D_time)
+        
+    elif temps_actuel < temps_relachement:
+        
+        t_sustain = temps_actuel - (A_time + D_time)
+        enveloppe = S_level * math.exp(-0.8 * t_sustain)
+        
+    else:
+        
+        t_sustain_total = temps_relachement - (A_time + D_time)
+        if t_sustain_total < 0:
+            val_debut_release = S_level
+        else:
+            val_debut_release = S_level * math.exp(-0.8 * t_sustain_total)
+            
+        t_release = temps_actuel - temps_relachement
+        enveloppe = val_debut_release * (1.0 - (t_release / R_time))
+        enveloppe = max(0.0, enveloppe)
+        
+    return onde * enveloppe
+
+
+
+# Dictionnaire associant les numéros aux fonctions instruments 
+BANQUE_INSTRUMENTS = {
+    0: son_bip,
+    1: son_piano,
+}
 
 def frequence_note(note, octave):
 #le LA octave 4 est à 440 Hz, et chaque demi-ton est une multiplication par la racine douzième de 2
@@ -43,15 +117,8 @@ def generer_audio(donnees_musicales, nom_fichier="output.wav"):
             if idx < nombre_samples:
                 temps_actuel = i / sample_rate
                 
-                
-                valeur = math.sin(2 * math.pi * freq * temps_actuel) * 0.3
-                
-                # Enveloppe
-                if i < 500: 
-                    valeur *= (i / 500)
-                elif i > duree_sample - 500: 
-                    valeur *= ((duree_sample - i) / 500)
-                
+                fonction_instrument = BANQUE_INSTRUMENTS.get(n["instrument"], son_bip)
+                valeur = fonction_instrument(temps_actuel, freq, duree_sec)
                 
                 piste_audio[idx] += valeur
 
