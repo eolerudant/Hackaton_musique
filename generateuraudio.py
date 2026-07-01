@@ -19,55 +19,61 @@ def son_bip(temps_actuel, freq, duree_totale):
     return valeur
 
 def son_piano(temps_actuel, freq, duree_totale):
-    # Exemple de poids : [Fondamentale, h2, h3, h4]
-    poids = [1.0, 0.5, 0.25, 0.125]
-    w = 2 * math.pi * freq * temps_actuel
-    onde = 0
-    for n, p in enumerate(poids, start=1):
-        onde += p * math.sin(n * w)
+    B = 0.00015  # Coefficient d'inharmonicité, en réalité les harmoniques ne sont pas exactement des multiples de la fondamentale
+    vitesse_extinction_harmoniques = 2.0  
     
+    # Spectre initial au moment de l'impact (Fondamentale, h2, h3, h4, h5, h6, h7)
+    poids_initiaux = [1.0, 0.6, 0.35, 0.15, 0.08, 0.04, 0.02]
     
+    # 2. SYNTHÈSE ADDITIVE DYNAMIQUE DES HARMONIQUES
+    onde = 0.0
+    for idx, p in enumerate(poids_initiaux):
+        n = idx + 1  # Rang de l'harmonique
+        
+        # Formule physique de l'inharmonicité d'une corde 
+        freq_harmonique = n * freq * math.sqrt(1 + B * (n ** 2))
+        w_n = 2 * math.pi * freq_harmonique * temps_actuel
+        
+        # Amortissement dynamique
+        amortissement = math.exp(-vitesse_extinction_harmoniques * n * temps_actuel)
+        
+        onde += p * math.sin(w_n) * amortissement
     
-    #PARAMÈTRES DE L'ENVELOPPE ADSR (en secondes)
-    A_time = 0.01    # Attack (temps)
-    D_time = 0.15    # Declay (temps pour attaindre le niveau de sustain)
-    S_level = 0.3    # Sustain (taux de volume maintenu)
-    R_time = 0.20    # Release (temps)
+    # Équilibrage du volume de l'onde harmonique pour éviter la saturation
+    onde *= 0.35
     
-    # Sécurité pour les notes très courtes : le relâchement ne peut dépasser 30% de la note
+    # Marteau
+    bruit_marteau = 0.0
+    if temps_actuel < 0.015:
+        
+        bruit_blanc_simule = math.sin(temps_actuel * 80000.0) * math.cos(temps_actuel * 45000.0)
+        # Enveloppe de percussion ultra-rapide
+        bruit_marteau = bruit_blanc_simule * 0.12 * math.exp(-350.0 * temps_actuel)
+    
+    # On assemble la corde vibrante et l'impact du marteau
+    son_physique = onde + bruit_marteau
+
+    # Enveloppe
+    A_time = 0.005   # Attack
+    R_time = 0.15    # Release
+    
     if R_time > duree_totale:
         R_time = duree_totale * 0.3
         
     temps_relachement = duree_totale - R_time
     
-    #CALCUL DE L'ENVELOPPE DYNAMIQUE
     if temps_actuel < A_time:
-        
         enveloppe = temps_actuel / A_time
-        
-    elif temps_actuel < (A_time + D_time):
-        
-        t_decay = temps_actuel - A_time
-        enveloppe = 1.0 - (1.0 - S_level) * (t_decay / D_time)
-        
     elif temps_actuel < temps_relachement:
-        
-        t_sustain = temps_actuel - (A_time + D_time)
-        enveloppe = S_level * math.exp(-0.8 * t_sustain)
-        
+
+        enveloppe = 1.0
     else:
-        
-        t_sustain_total = temps_relachement - (A_time + D_time)
-        if t_sustain_total < 0:
-            val_debut_release = S_level
-        else:
-            val_debut_release = S_level * math.exp(-0.8 * t_sustain_total)
-            
+        # Phase de Relâchement
         t_release = temps_actuel - temps_relachement
-        enveloppe = val_debut_release * (1.0 - (t_release / R_time))
+        enveloppe = 1.0 - (t_release / R_time)
         enveloppe = max(0.0, enveloppe)
         
-    return onde * enveloppe
+    return son_physique * enveloppe
 
 
 
