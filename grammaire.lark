@@ -1,0 +1,11 @@
+partition : bpm ";" note (";" note)*
+note      : duree temps_0 nom_note octave
+
+bpm       : NUMBER
+duree     : NUMBER
+temps_0   : NUMBER
+nom_note  : NUMBER
+octave    : NUMBER
+%import common.NUMBER
+%import common.WS
+%ignore WS
