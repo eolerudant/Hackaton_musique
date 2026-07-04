@@ -6,7 +6,9 @@ title = "fur elise";
 piano = {
     oscillator = sin/saw/square/triangle/bruit
     enveloppe = 4,4,4,4
-    harmonics = [2;0.5,6,8]
+    harmonics = [1,0.5,0.15,0.05]
 }
 
 trumpet = 
+#[partition]
+100 ; 2 0 1 4 piano ; 2 2 1 4 ; 2 4 1 4 ; 2 6 3 4 ; 2 8 5 4 ; 2 10 3 4 ; 2 12 1 4 ; 2 14 5 4 ; 2 16 3 4 ; 2 18 3 4 ; 2 20 1 4

@@ -1,12 +1,32 @@
-partition : bpm ";" note (";" note)*
-note      : duree temps_0 nom_note octave instrument
+start : meta_section instruments_section partition_section
 
-bpm       : NUMBER
-duree     : NUMBER
-temps_0   : NUMBER
-nom_note  : NUMBER
-octave    : NUMBER
-instrument: NUMBER
+meta_section : "#[meta]" meta_entry*
+meta_entry   : CNAME "=" val ";"
+val          : NUMBER | ESCAPED_STRING
+
+instruments_section : "#[instruments]" instrument_def*
+instrument_def      : CNAME "=" "{" inst_property* "}"
+inst_property       : CNAME "=" property_val
+property_val : oscillator_val | enveloppe_val | harmonics_val
+
+OSCILLATOR_TYPE : "sin" | "square" | "saw" | "triangle" | "noise"
+oscillator_val : OSCILLATOR_TYPE ("phase" NUMBER)?
+
+enveloppe_val : NUMBER "," NUMBER "," NUMBER "," NUMBER
+harmonics_val : "[" [NUMBER ("," NUMBER)*] "]"
+
+partition_section : "#[partition]" note (";" note)*
+note : duree temps_0 nom_note octave [instrument_ref]
+
+# Le point d'interrogation ? supprime l'emballage "Tree" de Lark
+?duree     : NUMBER
+?temps_0   : NUMBER
+?nom_note  : NUMBER
+?octave    : NUMBER
+?instrument_ref : CNAME
+
+%import common.CNAME
 %import common.NUMBER
+%import common.ESCAPED_STRING
 %import common.WS
 %ignore WS
