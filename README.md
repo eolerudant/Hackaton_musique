@@ -12,7 +12,7 @@ Le projet requiert **Python 3** et la bibliothèque d'analyse syntaxique **Lark*
  
 Le moteur audio utilise exclusivement les modules natifs de Python (`wave`, `struct`, `math`), évitant ainsi d'installer des bibliothèques audio lourdes ou complexes à compiler.
  
-### Étape 1 : Installer Lark
+### Installer Lark
  
 Ouvrez votre terminal et installez Lark via `pip` :
  
