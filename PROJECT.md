@@ -40,7 +40,7 @@ $$f_n = n \cdot f_0 \cdot \sqrt{1 + B \cdot n^2}$$
 Le coefficient $B = 0.00015$ étire légèrement les fréquences des harmoniques supérieures, donnant au son synthétisé cette chaleur et ce timbre typique du piano acoustique.
 Le programme choisit ce type de modélisation physique si l'instrument défini dans la partition s'appelle "piano".
 
-## ⚡ Difficultés Rencontrées & Solutions
+## Difficultés Rencontrées & Solutions
  
 ###  Le filtrage des terminaux anonymes par Lark
  
