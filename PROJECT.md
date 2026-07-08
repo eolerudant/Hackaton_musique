@@ -38,11 +38,8 @@ Pour simuler le comportement d'une corde métallique rigide de piano, nous avons
 $$f_n = n \cdot f_0 \cdot \sqrt{1 + B \cdot n^2}$$
  
 Le coefficient $B = 0.00015$ étire légèrement les fréquences des harmoniques supérieures, donnant au son synthétisé cette chaleur et ce timbre typique du piano acoustique.
- 
-###  Transitoire d'Attaque (Hammer Impact Noise)
- 
-Un piano se distingue par le bruit de feutre et d'impact du marteau sur la corde. Nous l'avons simulé en superposant aux 15 premières millisecondes un bruit blanc filtré par une enveloppe d'extinction exponentielle ultra-rapide.
- 
+Le programme choisit ce type de modélisation physique si l'instrument défini dans la partition s'appelle "piano".
+
 ## ⚡ Difficultés Rencontrées & Solutions
  
 ###  Le filtrage des terminaux anonymes par Lark
