@@ -54,7 +54,7 @@ Le programme choisit ce type de modélisation physique si l'instrument défini d
  
 **Solution :** Utilisation du préfixe `?` dans notre grammaire (`?duree : NUMBER`) pour demander à Lark d'extraire la valeur brute sans encapsuler inutilement.
  
-## 👥 Organisation du projet
+## Organisation du projet
  
 Nous avons travaillé en intégration continue directe :
  
