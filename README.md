@@ -61,7 +61,7 @@ piano = {
 3. **`#[partition]`** : Suite de notes séparées par des points-virgules `;`. Chaque note s'écrit sous la forme de 4 ou 5 valeurs :
    **Format d'une note :** `durée temps_début note octave [instrument_optionnel]`
    * Exemple : `2 0 5 5 piano` jouera une note de durée 2 temps, démarrant au temps 0, jouant la note 5 à l'octave 5 avec l'instrument piano. Il y a 12 notes par octave. Les notes suivantes héritent de cet instrument tant qu'aucun autre n'est spécifié.
-## 🚀 Comment exécuter le projet
+## Comment exécuter le projet
  
 1. Placez votre partition (par exemple `runaway.txt`) à la racine du projet.
 2. Ouvrez le fichier de commande principal `main.py`.
@@ -72,7 +72,7 @@ piano = {
 ```
  
 5. Un fichier nommé `musique_finale.wav` est instantanément créé à la racine. Ouvrez-le et profitez de votre composition !
-## 📁 Architecture des Fichiers
+## Architecture des Fichiers
  
 * **`grammaire.lark`** : Définition formelle EBNF de notre langage.
 * **`parser.py`** : Charge la grammaire et génère l'arbre de syntaxe abstraite (AST).
