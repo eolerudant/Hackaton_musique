@@ -1,10 +1,10 @@
 
 Readme · MD
-# 🎵 Synthétiseur Musical DSL (Lark & Python)
+# Synthétiseur Musical DSL (Lark & Python)
  
-Ce projet implémente un compilateur et synthétiseur audio basé sur un langage dédié (DSL - *Domain Specific Language*) pour la création musicale. Il permet d'écrire une partition structurée au format texte et de la compiler en un fichier audio `.wav` de haute qualité en utilisant la synthèse additive et des principes de modélisation physique (inharmonicité, amortissement naturel).
+Ce projet implémente un synthétiseur audio basé sur un langage dédié (DSL - *Domain Specific Language*) pour la création musicale. Il permet d'écrire une partition structurée au format texte et de la compiler en un fichier audio `.wav` de haute qualité.
  
-## 🛠️ Installation
+##  Installation
  
 ### Prérequis
  
@@ -28,14 +28,7 @@ pip install lark
 > python -m pip install lark --break-system-packages
 > ```
  
-### Étape 2 : Configurer l'interpréteur dans VS Code (Recommandé)
- 
-Si VS Code ne trouve pas Lark à l'exécution :
- 
-1. Ouvrez la palette de commandes via `Ctrl + Shift + P` (ou `Cmd + Shift + P` sur Mac).
-2. Tapez et sélectionnez **Python: Select Interpreter**.
-3. Choisissez l'environnement dans lequel Lark a été installé (par exemple, votre environnement miniconda ou conda).
-## 🎼 Structure d'une Partition (.txt)
+
  
 Le langage de programmation développé est divisé en trois sections claires et obligatoires :
  
@@ -67,7 +60,7 @@ piano = {
    * **`harmonics`** : Spectre harmonique (poids de la fondamentale et des harmoniques successives pour la synthèse additive).
 3. **`#[partition]`** : Suite de notes séparées par des points-virgules `;`. Chaque note s'écrit sous la forme de 4 ou 5 valeurs :
    **Format d'une note :** `durée temps_début note octave [instrument_optionnel]`
-   * Exemple : `2 0 5 5 piano` jouera une note de durée 2 temps, démarrant au temps 0, jouant la note 5 à l'octave 5 avec l'instrument piano. Les notes suivantes héritent de cet instrument tant qu'aucun autre n'est spécifié.
+   * Exemple : `2 0 5 5 piano` jouera une note de durée 2 temps, démarrant au temps 0, jouant la note 5 à l'octave 5 avec l'instrument piano. Il y a 12 notes par octave. Les notes suivantes héritent de cet instrument tant qu'aucun autre n'est spécifié.
 ## 🚀 Comment exécuter le projet
  
 1. Placez votre partition (par exemple `runaway.txt`) à la racine du projet.
